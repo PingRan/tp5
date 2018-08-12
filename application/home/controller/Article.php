@@ -1,5 +1,7 @@
 <?php
 namespace app\home\controller;
+use app\home\model\Picture;
+use think\Db;
 use think\Request;
 use app\home\model\Document;
 /**
@@ -28,7 +30,9 @@ class Article extends Home {
 		$category = $this->category();
 		/* 获取当前分类列表 */
 		$Document = new Document();
+
 		$list = $Document->lists($category['id']);
+
 		if(false === $list){
 			$this->error('获取列表数据失败！');
 		}
@@ -36,9 +40,37 @@ class Article extends Home {
 		/* 模板赋值并渲染模板 */
 		$this->assign('category', $category);
 		$this->assign('list', $list);
+
 		// echo $category['template_lists'];
-		return $this->fetch($category['template_lists']);
+//		return $this->fetch($category['template_lists']);
+
+        return $this->fetch('article/index');
 	}
+
+	//ajaxlist请求
+    public function ajaxlists(){
+
+        $data=\request()->param();
+        $Document=new Document();
+        $map=$Document->listMap($data['category']);
+
+        $notices=$Document->where($map)->where('display','eq',1)->limit(($data['p']-1)*2,2)->select();
+
+        $p=$data['p'];
+        if(!empty($notices)){
+            $p=$data['p']+1;
+        }
+        $picture=new Picture();
+
+        foreach ($notices as &$v){
+            $v['url']=$picture->field('path')->find($v['cover_id']);
+        }
+
+        $data=['notice'=>$notices,'url'=>url('Article/ajaxlists',array('category'=>$data['category'],'p'=>$p))];
+        echo json_encode($data);
+
+    }
+
 
 	/* 文档模型详情页 */
 	public function detail($id = 0, $p = 1){
@@ -57,6 +89,7 @@ class Article extends Home {
 		if(!$info){
 			$this->error($Document->getError());
 		}
+		$info['create_time']=date('Y-m-d H:i:s',$info['create_time']);
 		/* 分类信息 */
 		$category = $this->category($info['category_id']);
 		/* 获取模板 */
@@ -100,5 +133,41 @@ class Article extends Home {
 			$this->error('分类不存在或被禁用！');
 		}
 	}
+    //报名
+    public function SingUp(){
+
+        $result=['status'=>true,'message'=>'报名成功','code'=>1];
+        if ( !is_login() ) {
+            $result=['status'=>false,'message'=>'请登录','code'=>0];
+            return json_encode($result);
+        }
+        $act_id=\request()->get('id');
+        $user_id=$_SESSION['twothink_home']['user_auth']['uid'];
+        $is_SingUp=Db::name('activity')->where('id','eq',$user_id)->where('act_id','eq',$act_id)->find();
+       if($is_SingUp){
+           $result=['status'=>false,'message'=>'您已报名,请勿重复报名','code'=>-1];
+       }else{
+           Db::name('activity')->insert(['id'=>$user_id,'act_id'=>$act_id]);
+       }
+        echo json_encode($result);
+    }
+    //显示button
+    public function button()
+    {
+        $result=['status'=>false];
+
+        if ( !is_login() ) {
+            $result=['status'=>true];//表示显示点击报名
+            return json_encode($result);
+        }
+        $act_id=\request()->get('id');
+        $user_id=$_SESSION['twothink_home']['user_auth']['uid'];
+        $is_SingUp=Db::name('activity')->where('id','eq',$user_id)->where('act_id','eq',$act_id)->find();
+        if(!$is_SingUp){
+            $result=['status'=>true];
+            return json_encode($result);
+        }
+        echo json_encode($result);
+    }
 
 }

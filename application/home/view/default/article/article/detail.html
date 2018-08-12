@@ -1,32 +1,55 @@
-{extend name="base/common"/}
-
-{block name="header"}
-    <header class="jumbotron subhead" id="overview">
-		<div class="container">
-			<h2>{$info.title}</h2>
-			<p>
-				<span  class="pull-left">
-					<span class="author">{$info.uid|get_username}</span>
-					<span> 发表于 {$info.create_time|date='Y-m-d H:i',###}</span>
-				</span>
-				<span class="pull-right">
-					{article:prev name="prev" info="info"}
-                        <a href="{:url('',array('id'=>$prev['id']))}">上一篇</a>
-                    {/article:prev} 
-                    {article:next name="next" info="info"}
-                        <a href="{:url('?id='.$next['id'])}">下一篇</a>
-                    {/article:next}
-			</p>
-		</div>
-	</header>
-{/block}
-
+{extend name="public/base" /}
+<!--导航结束-->
 {block name="body"}
-    <div class="span9 main-content">
-        <!-- Contents
-        ================================================== -->
-        <section id="contents">{$info.content}</section>
-        <hr/>
-        {:hook('documentDetailAfter',$info)}
+<div class="container-fluid">
+    <div class="blank"></div>
+    <h3 class="noticeDetailTitle"><strong>{$info.title}</strong></h3>
+    <div class="noticeDetailInfo">发布者:{$info.name}</div>
+    <div class="noticeDetailInfo">浏览次数:{$info.view}</div>
+    <div class="noticeDetailInfo">发布时间：{$info.create_time}</div>
+    <div class="noticeDetailContent">
+        {$info.content}
     </div>
+    <div id="{$info.id}" class="sign"></div>
+
+</div>
+
+{/block}
+{block name="script"}
+<script>
+
+    var category_id ="{$info.category_id}";
+    if (category_id == 47) {
+        var url = '/home/article/button?id=' + $(".sign").attr('id');
+        $.get(url,function(e){
+            var result=JSON.parse(e);
+            if(result.status){
+                $(".sign").html('<button id="SignUp" class="btn-block btn-primary">点击报名</button>');
+            }else{
+                $(".sign").html('<button disabled id="SignUp" class="btn-block btn-default">已报名</button>');
+            }
+        })
+    }
+
+    $(".sign").on('click', '#SignUp', function () {
+        var url = '/home/article/SingUp?id=' + $(".sign").attr('id');
+        $.get(url, function (e) {
+            var data = JSON.parse(e);
+            if (data.status == false) {
+
+                if (data.code == 0) {
+                    alert(data.message);
+                    window.location.href = '/user/login';
+                }else{
+                    alert(data.message);
+                }
+
+            }else{
+                alert(data.message);
+                $(".sign").html('<button disabled id="SignUp" class="btn-block btn-default">已报名</button>');
+            }
+        })
+    });
+</script>
+
 {/block}

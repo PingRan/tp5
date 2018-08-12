@@ -1,0 +1,90 @@
+{extend name="public/base" /}
+
+{block name="body"}
+	<div class="main-title">
+		<h2>认证管理</h2>
+	</div>
+
+	<div class="cf">
+		<a class="btn" href="{:url('Owner/add')}">新 增</a>
+		<button id="del" class="btn ajax-post confirm" url="{:url('del')}" target-form="ids">删 除</button>
+		<!--<button class="btn list_sort" url="{:url('sort',array('pid'=>input('get.pid',0)),'')}">排序</button>-->
+	</div>
+
+	<div class="data-table table-striped">
+		<table>
+			<thead>
+				<tr>
+					<th class="row-selected">
+						<input class="checkbox check-all" type="checkbox">
+					</th>
+
+					<th>ID</th>
+					<th>姓名</th>
+                    <th>房号</th>
+					<th>关系</th>
+					<th>电话</th>
+					<th>身份证号</th>
+					<th>认证状态</th>
+					<th>申请时间</th>
+					<th>操作</th>
+				</tr>
+			</thead>
+			<tbody>
+				{notempty name="list"}
+				{volist name="list" id="owner"}
+					<tr>
+						<td><input class="ids row-selected" type="checkbox" name="" id="" value="{$repair['id']}"> </td>
+						<td>{$owner.id}</td>
+						<td>{$owner.name}</td>
+						<td>{$owner.house}</td>
+						<td>{$owner.bind?($owner.bind==1?'业主':'亲属'):'租户'}</td>
+                        <td>{$owner.tel}</td>
+						<td>{$owner.ID_Card}</td>
+						<td>{$owner.status?($owner.status==1?'已验证':'未通过'):'待认证'}</td>
+						<td>{$owner.create_time}</td>
+						<td>
+							<a title="查看" href="{:url('show?id='.$owner.id)}">查看</a>
+							<a title="编辑" href="{:url('edit?id='.$owner.id)}">编辑</a>
+							<a class="confirm ajax-get" title="删除" href="{:url('del?id='.$owner.id)}">删除</a>
+						</td>
+					</tr>
+				{/volist}
+				{else/}
+				<td colspan="6" class="text-center"> aOh! 暂时还没有内容! </td>
+				{/notempty}
+			</tbody>
+		</table>
+
+		<!-- 分页 -->
+		<div class="page">
+			<!--{$list->render()}-->
+		</div>
+	</div>
+{/block}
+
+{block name="script"}
+<script type="text/javascript">
+    $(function() {
+    	//点击排序
+    	$('#del').click(function(){
+    		var url = $(this).attr('url');
+    		var ids = $('.ids:checked');
+    		var param = '';
+    		if(ids.length > 0){
+    			var str = new Array();
+    			ids.each(function(){
+    				str.push($(this).val());
+    			});
+    			param = str.join(',');
+    		}
+
+    		if(url != undefined && url != ''){
+    			window.location.href = '/admin/owner/del/ids/'+param;
+    		}
+    	});
+    });
+
+
+</script>
+{/block}

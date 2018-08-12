@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:2:{s:81:"D:\phpStudy\WWW\Property\public/../application/home/view/default/index\index.html";i:1533808174;s:81:"D:\phpStudy\WWW\Property\public/../application/home/view/default/public\base.html";i:1533810140;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:2:{s:81:"D:\phpStudy\WWW\Property\public/../application/home/view/default/index\index.html";i:1533962492;s:81:"D:\phpStudy\WWW\Property\public/../application/home/view/default/public\base.html";i:1534054270;}*/ ?>
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -35,7 +35,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-xs-4">
-                    <a href="<?php echo url('Notice/index'); ?>">
+                    <a href="<?php echo url('article/lists',array('category'=>44)); ?>">
                     <div class="indexLabel label-danger">
                     <span class="glyphicon glyphicon-bullhorn"></span><br/>
                     小区通知
@@ -43,7 +43,7 @@
                     </a>
                 </div>
                 <div class="col-xs-4">
-                    <a href="<?php echo url('home/notice/service'); ?>">
+                    <a href="<?php echo url('article/lists',array('category'=>45)); ?>">
                     <div class="indexLabel label-warning">
                     <span class="glyphicon glyphicon-ok-circle"></span><br/>
                     便民服务
@@ -59,7 +59,7 @@
                     </a>
                 </div>
                 <div class="col-xs-4">
-                    <a href="notice.html">
+                    <a href="<?php echo url('article/lists',array('category'=>46)); ?>">
                     <div class="indexLabel label-success">
                     <span class="glyphicon glyphicon-briefcase"></span><br/>
                     商家活动
@@ -67,7 +67,7 @@
                     </a>
                 </div>
                 <div class="col-xs-4">
-                    <a href="zushou.html">
+                    <a href="<?php echo url('home/index/house'); ?>">
                     <div class="indexLabel label-primary">
                     <span class="glyphicon glyphicon-usd"></span><br/>
                     小区租售
@@ -75,7 +75,7 @@
                     </a>
                 </div>
                 <div class="col-xs-4">
-                    <a href="notice.html">
+                    <a href="<?php echo url('article/lists',array('category'=>47)); ?>">
                     <div class="indexLabel label-default">
                         <span class="glyphicon glyphicon-apple"></span><br/>
                         小区活动
@@ -94,13 +94,14 @@
                 <p class="navbar-text"><a href="<?php echo url('home/Index/index'); ?>" class="navbar-link">首页</a></p>
             </div>
             <div class="col-xs-3">
-                <p class="navbar-text"><a href="" class="navbar-link">服务</a></p>
+                <p class="navbar-text"><a href="<?php echo url('home/Index/service'); ?>" class="navbar-link">服务</a></p>
             </div>
             <div class="col-xs-3">
-                <p class="navbar-text"><a href="#" class="navbar-link">发现</a></p>
+                <p class="navbar-text"><a href="<?php echo url('home/Index/find'); ?>" class="navbar-link">发现</a></p>
             </div>
             <div class="col-xs-3">
-                <p class="navbar-text"><a href="<?php echo url('user/login/index'); ?>" class="navbar-link">我的</a></p>
+
+                <p class="navbar-text"><a href="<?php echo url('home/Index/user'); ?>" class="navbar-link">我的</a></p>
             </div>
         </div>
     </nav>

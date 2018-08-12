@@ -1,0 +1,55 @@
+{extend name="public/base" /}
+<!--导航结束-->
+{block name="body"}
+
+<div class="container-fluid">
+    <div id="test"></div>
+
+    <div id="more"></div>
+</div>
+
+{/block}
+{block name="script"}
+<script>
+
+    function getMore(url) {
+        $.get(url, function (e) {
+            var data = JSON.parse(e);
+            var str = '';
+            if (data.myRepair.length != 0) {
+                $.each(data.myRepair, function (index) {
+                    myRepair = data.myRepair[index];
+                    str += '<div class="row noticeList">' +
+                        '<a href="/home/index/repairDetail?id=' + myRepair.id + '">' +
+                        '<div class="col-xs-1">'
+                        + '</div>'
+                        + '<div class="col-xs-10">'
+                        + '<p class="title">' + myRepair['name'] + '</p>'
+                        + '<p class="intro">' + myRepair.title + '</p>'
+                        + '<p class="info">电话: ' + myRepair.tel + ' <span class="pull-right">' + myRepair.create_time + '</span> </p>'
+                        + '</div>'
+                        + '</a>'
+                        + '</div>'
+                });
+                $("#test").append(str);
+                $("#more").html('<a class="page" url="' + data.url + '" href="javascript:;">获取更多</a>');
+            } else {
+                $(".page").text('没有更多了哦')
+            }
+
+        });
+    }
+
+    var url ="{:url('home/index/ajaxRepair',array('p'=>1))}";
+
+    getMore(url);
+
+    $("#more").on('click', ".page", function () {
+
+        var murl = $(this).attr('url');
+
+        getMore(murl);
+    });
+</script>
+
+{/block}

@@ -8,12 +8,15 @@
 // +----------------------------------------------------------------------
 
 namespace app\user\model;
+use app\admin\model\Owner;
+use app\home\model\Document;
 use think\Model;
 use app\common\controller\UcApi;
 /**
  * 文档基础模型
  */
 class Member extends Model{
+
 	protected $autoWriteTimestamp = false;
 //     /* 用户模型自动完成 */
 //     protected $_auto = array(
@@ -87,6 +90,17 @@ class Member extends Model{
         session('user_auth', $auth);
         session('user_auth_sign', data_auth_sign($auth));
 
+    }
+
+    public function getOwner()
+    {
+
+        return $this->hasOne(Owner::class,'user_id','uid');
+    }
+
+    public function active()
+    {
+        return $this->hasMany(Document::class,'uid','uid')->where('category_id','eq',47)->field(['title','id']);
     }
 
 }

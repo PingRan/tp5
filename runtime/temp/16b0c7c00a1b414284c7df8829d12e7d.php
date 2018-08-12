@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:2:{s:83:"D:\phpStudy\WWW\Property\public/../application/home/view/default/notice\notice.html";i:1533870349;s:81:"D:\phpStudy\WWW\Property\public/../application/home/view/default/public\base.html";i:1533810140;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:2:{s:83:"D:\phpStudy\WWW\Property\public/../application/home/view/default/notice\index.html";i:1533872819;s:81:"D:\phpStudy\WWW\Property\public/../application/home/view/default/public\base.html";i:1533810140;}*/ ?>
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -94,7 +94,7 @@ function getMore(url,p) {
             $('.page').attr('p',data.p);
             $("#test").append(str);
         }else{
-            $("#more").text('没有更多了')
+            $("#more").text('没有更多了哦')
         }
 
 

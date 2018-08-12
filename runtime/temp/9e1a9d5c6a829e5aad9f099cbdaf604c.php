@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:2:{s:84:"D:\phpStudy\WWW\Property\public/../application/admin/view/default/channel\index.html";i:1533782587;s:82:"D:\phpStudy\WWW\Property\public/../application/admin/view/default/public\base.html";i:1496373782;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:2:{s:84:"D:\phpStudy\WWW\Property\public/../application/admin/view/default/channel\12index.html";i:1533782587;s:82:"D:\phpStudy\WWW\Property\public/../application/admin/view/default/public\base.html";i:1496373782;}*/ ?>
 <!doctype html>
 <html>
 <head>

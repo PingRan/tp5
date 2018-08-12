@@ -1,0 +1,25 @@
+{extend name="public/base" /}
+<!--导航结束-->
+{block name="body"}
+
+<div class="container-fluid">
+    {notempty name="list"}
+    {volist name="list" id="sheng"}
+    <div class="row noticeList">
+        <a href="/home/article/detail?id={$sheng['id']}">
+            <div class="col-xs-1">
+                <img class="noticeImg" src="" />
+            </div>
+            <div class="col-xs-10">
+                <p class="title">{$sheng.title}</p>
+                <p class="intro">{$sheng.description}</p>
+                <p class="intro">{$sheng.create_time}</p>
+                <p class="info">浏览<span class="pull-right"></span>{$sheng.view}</p>
+            </div>
+        </a>
+    </div>
+    {/volist}
+    {/notempty}
+</div>
+
+{/block}

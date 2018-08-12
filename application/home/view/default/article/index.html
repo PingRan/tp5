@@ -1,38 +1,60 @@
-{extend name="base/common"/}
-
-{block name="header"}
-    <header class="jumbotron subhead" id="overview">
-        <div class="container">
-            <h2>源自相同起点，演绎不同精彩！</h2>
-            <p class="lead"></p>
-        </div>
-    </header>
-{/block}
-
+{extend name="public/base" /}
+<!--导航结束-->
 {block name="body"}
-    <div class="span9">
-        <!-- Contents
-        ================================================== -->
-        <section id="contents">
-            {article:list name="list" category="$category['id']" child="true"}
-              <div class="row">
-                      <div class="span2">
-                          <a href="{:url('Article/detail?id='.$list['id'])}"><img class="img-thumbnail" src="__ROOT__{$list.cover_id|get_cover_path}" /></a>
-                      </div>
-                      <div class="span7">
-                        <h3><a href="{:url('Article/detail?id='.$list['id'])}">{$list.title}</a></h3>
-                        <p class="lead">{$list.description}</p>
-                          <span><a href="{:url('Article/detail?id='.$list['id'])}">查看全文</a></span>
-                          <span class="pull-right">
-                              <span class="author">{$list.uid|get_username}</span>
-                              <span>于 {$list.create_time|date='Y-m-d H:i',###}</span> 发表在 <span>
-                              <a href="{:url('Article/lists?category='.get_category_name($list['category_id']))}">{$list.category_id|get_category_title}</a></span>
-                              <span>阅读( {$list.view} )</span>&nbsp;&nbsp;
-                          </span>
-                      </div>
-              </div>
-              <hr/>
-            {/article:list}
-        </section>
-    </div>
+
+<div class="container-fluid">
+    <div id="test"></div>
+
+    <div id="more"></div>
+</div>
+
+{/block}
+{block name="script"}
+<script>
+
+    function getMore(url) {
+        $.get(url, function (e) {
+            var data = JSON.parse(e);
+            var str = '';
+            if (data.notice.length != 0) {
+                $.each(data.notice, function (index) {
+                    notice = data.notice[index];
+                    var img = '';
+                    if (notice.url) {
+                        img = notice.url.path;
+                    }
+                    str += '<div class="row noticeList">' +
+                        '<a href="/home/article/detail?id=' + notice.id + '">' +
+                        '<div class="col-xs-2">'
+                        + '<img class="noticeImg" src="' + img + '" />'
+                        + '</div>'
+                        + '<div class="col-xs-10">'
+                        + '<p class="title">' + notice['title'] + '</p>'
+                        + '<p class="intro">' + notice.description + '</p>'
+                        + '<p class="info">浏览: ' + notice.view + ' <span class="pull-right">' + notice.create_time + '</span> </p>'
+                        + '</div>'
+                        + '</a>'
+                        + '</div>'
+                });
+                $("#test").append(str);
+                $("#more").html('<a class="page" url="' + data.url + '" href="javascript:;">获取更多</a>');
+            } else {
+                $(".page").text('没有更多了哦')
+            }
+
+        });
+    }
+
+    var url ="{:url('article/ajaxlists',array('category'=>$category->id,'p'=>1))}";
+
+    getMore(url);
+
+    $("#more").on('click', ".page", function () {
+
+        var murl = $(this).attr('url');
+
+        getMore(murl);
+    });
+</script>
+
 {/block}

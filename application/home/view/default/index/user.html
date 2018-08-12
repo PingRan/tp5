@@ -1,0 +1,121 @@
+{extend name="public/base" /}
+
+{block name="body"}
+
+    <div class="container-fluid">
+
+        <div class="blank"></div>
+        <div class="row">
+            <div class="col-xs-3">
+                <img src="/homestatic/image/5.png" width="60" height="60" />
+            </div>
+            <div class="col-xs-9">
+                {$info.username}<br/>
+                门牌号:{$info.house}<br/>
+                {$info.status?($info.status?'已验证':'未通过'):'未验证'}:{$info.name}<br/>
+                积分:<span class="text-danger">100</span>
+            </div>
+        </div>
+        <div class="blank"></div>
+        <div class="row text-center myLabel nav nav-tabs">
+            <div class="col-xs-4 label-danger"><a href="#home" data-toggle="tab"><span class="iconfont">&#xe60b;</span>我的资料</a></div>
+            <div class="col-xs-4 label-success"><a href="#ticket" data-toggle="tab"><span class="iconfont">&#xe609;</span>我的报修</a></div>
+            <div id="act" class="col-xs-4 label-primary"><a href="#activity" data-toggle="tab"><span class="iconfont">&#xe606;</span>报名的活动</a></div>
+        </div>
+
+        <div class="blank"></div>
+        <div class="tab-content">
+            <div class="tab-pane active" id="home">
+                <ul class="list-group fuwuList">
+                    <li  class="list-group-item test"><a href="#" class="text-danger"><span class="iconfont">&#xe60a;</span>我的缴费账单</a> </li>
+                    <li class="list-group-item test"><a href="#" class="text-info"><span class="iconfont">&#xe608;</span>我的物业通知</a></li>
+                    <li class="list-group-item test"><a href="#" class="text-info"><span class="iconfont">&#xe607;</span>我的水电气使用</a></li>
+                </ul>
+            </div>
+            <div class="tab-pane"  role="tabpanel" id="ticket">
+                <ul id="repair" class="list-group fuwuList"></ul>
+                <div id="more"></div>
+            </div>
+
+            <div class="tab-pane" id="activity">
+                <ul id="active" class="list-group fuwuList"></ul>
+            </div>
+        </div>
+
+    </div>
+{/block}
+{block name="script"}
+<script>
+
+    function getMore(url) {
+        $.get(url, function (e) {
+            var data = JSON.parse(e);
+            var str = '';
+            if (data.myRepair.length != 0) {
+                $.each(data.myRepair, function (index) {
+                    myRepair = data.myRepair[index];
+                    str += '<li class="list-group-item"><a href="/home/index/repairDetail?id=' + myRepair.id + '" class="text-danger">'+myRepair.title+'</a> </li>'
+                });
+                $("#repair").append(str);
+                $("#more").html('<a class="page btn btn-default btn-block" url="' + data.url + '" href="javascript:;">获取更多</a>');
+            } else {
+                $(".page").text('没有更多了哦')
+            }
+
+        });
+    }
+
+    var url ="{:url('home/index/ajaxRepair',array('p'=>1))}";
+
+    getMore(url);
+
+    $("#more").on('click', ".page", function () {
+
+        var murl = $(this).attr('url');
+
+        getMore(murl);
+    });
+
+    $(".test").click(function(){
+        $.getJSON('Bill',function(e){
+            if(e.status){
+                alert(e.message);
+            }else{
+               alert(e.message);
+               if(e.code){
+                   window.location.href='/home/index/owner';
+               }else{
+                   window.location.href = '/user/login';
+               }
+
+            }
+
+        });
+    });
+
+    $("#act").click(function(){
+        $.getJSON('myactive',function(e){
+
+            if(e.status){
+                var str=''
+               $.each(e.message,function(index){
+                   str += '<li class="list-group-item"><a href="/home/article/detail?id='+index+'" class="text-danger">'+e.message[index]+'</a> </li>'
+               });
+               $("#active").html(str);
+            }else{
+                alert(e.message);
+                if(e.code){
+                    window.location.href='/home/index/owner';
+                }else{
+                    window.location.href = '/user/login';
+                }
+
+            }
+
+        });
+    });
+
+
+</script>
+
+{/block}

@@ -1,0 +1,18 @@
+{extend name="public/base" /}
+<!--导航结束-->
+{block name="body"}
+<div class="container-fluid">
+    <div class="blank"></div>
+    <h3 class="noticeDetailTitle"><strong>{$detail.title}</strong></h3>
+    <div class="noticeDetailInfo">价格:{$detail.price}</div>
+    <div class="noticeDetailInfo">电话:{$detail.tel}</div>
+    <div class="noticeDetailInfo">简介：{$detail.description}</div>
+    <div class="noticeDetailInfo">发布时间：{$detail.create_time}</div>
+    <img width="250px" src="{$detail.imgUrl.path}" alt="...">
+    <div class="noticeDetailContent">
+        {$detail.content}
+    </div>
+
+</div>
+
+{/block}

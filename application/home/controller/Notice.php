@@ -10,6 +10,7 @@ use app\home\model\Picture;
 class Notice extends Home {
     public function index(){
          //小区通知列表
+
         return $this->fetch('notice');
     }
 
@@ -35,8 +36,13 @@ class Notice extends Home {
     public function detail($id)
     {
         $Document = new Document();
+        /* 更新浏览数 */
+        $map = array('id' => $id);
+        $Document->where($map)->setInc('view');
+
         $info = $Document->detail($id);
         $info['create_time']=date('Y-m-d H:i:s',$info['create_time']);
+
         $this->assign('info',$info);
         return $this->fetch('notice-detail');
     }

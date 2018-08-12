@@ -1,0 +1,60 @@
+{extend name="public/base" /}
+
+{block name="body"}
+	<div class="main-title">
+		<h3>认证详情</h3>
+	</div>
+<p style="font-size: 15px">姓名:      {$list.name}</p>
+<p style="font-size: 15px">房号:      {$list.house}</p>
+<p style="font-size: 15px">关系:      {$list.bind?$owner.bind==1?'业主':'亲属':'租户'}</p>
+<p style="font-size: 15px">账户:      {$list.user_id}</p>
+<p style="font-size: 15px">电话:      {$list.tel}</p>
+<p style="font-size: 15px">身份证:    {$list.ID_Card}</p>
+<p style="font-size: 15px">认证:      {$list.status?($list.status==1?'已认证':'未通过'):'待认证'}</p>
+<p style="font-size: 15px">申请时间:   {$list.create_time}</p>
+
+<div class="main-title" style="margin-top: 20px;">
+	<h3>已认证的账户</h3>
+</div>
+{notempty name="$all"}
+  {volist name="$all" id="user"}
+  账号:  {$user.name}
+  关系:{$user.bind?$user.bind==1?'业主':'亲属':'租户'}
+  联系电话  {$user.tel}
+  {/volist}
+{/notempty}
+<div class="cf">
+	<a class="btn" href="{:url('Owner/index')}">返回</a>
+	{if condition="$list['status'] neq 1"}
+	<a class="btn" href="{:url('Owner/pass',array('id'=>$list.id,'code'=>1))}">通过认证</a>
+	{else/}
+	<a class="btn" href="{:url('Owner/pass',array('id'=>$list.id,'code'=>-1))}">拒绝认证</a>
+	{/if}
+</div>
+{/block}
+
+{block name="script"}
+<script type="text/javascript">
+    $(function() {
+    	//点击排序
+    	$('#del').click(function(){
+    		var url = $(this).attr('url');
+    		var ids = $('.ids:checked');
+    		var param = '';
+    		if(ids.length > 0){
+    			var str = new Array();
+    			ids.each(function(){
+    				str.push($(this).val());
+    			});
+    			param = str.join(',');
+    		}
+
+    		if(url != undefined && url != ''){
+    			window.location.href = '/admin/owner/del/ids/'+param;
+    		}
+    	});
+    });
+
+
+</script>
+{/block}

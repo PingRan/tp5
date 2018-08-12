@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:2:{s:90:"D:\phpStudy\WWW\Property\public/../application/home/view/default/notice\notice-detail.html";i:1533807004;s:81:"D:\phpStudy\WWW\Property\public/../application/home/view/default/public\base.html";i:1533810140;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:2:{s:90:"D:\phpStudy\WWW\Property\public/../application/home/view/default/notice\notice-detail.html";i:1533871296;s:81:"D:\phpStudy\WWW\Property\public/../application/home/view/default/public\base.html";i:1533810140;}*/ ?>
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -31,6 +31,7 @@
         <div class="blank"></div>
         <h3 class="noticeDetailTitle"><strong><?php echo $info['title']; ?></strong></h3>
         <div class="noticeDetailInfo">发布者:<?php echo $info['name']; ?></div>
+        <div class="noticeDetailInfo">浏览次数:<?php echo $info['view']; ?></div>
         <div class="noticeDetailInfo">发布时间：<?php echo $info['create_time']; ?></div>
         <div class="noticeDetailContent">
             <?php echo $info['content']; ?>

@@ -83,4 +83,6 @@ class Member extends Model {
         return $this->where(array('uid'=>(int)$uid))->value('nickname');
     }
 
+
+
 }
